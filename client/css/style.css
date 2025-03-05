@@ -74,6 +74,40 @@ img {
     height: auto;
 }
 
+/* 📖 FAQ Section */
+.faq-title {
+    color: var(--primary);
+    text-align: center;
+    font-weight: bold;
+}
+
+.faq-item {
+    background-color: var(--background);
+    border: 1px solid var(--accent);
+}
+
+.faq-item .accordion-button {
+    background-color: var(--secondary);
+    color: var(--text);
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.faq-item .accordion-button:hover {
+    background-color: var(--primary);
+    color: var(--background);
+}
+
+.faq-item .accordion-button:not(.collapsed) {
+    background-color: var(--primary);
+    color: var(--background);
+}
+
+.faq-item .accordion-body {
+    background-color: var(--background);
+    color: var(--accent);
+}
+
 /* 📱 Responsive Design */
 @media (max-width: 768px) {
     .navbar-brand {
