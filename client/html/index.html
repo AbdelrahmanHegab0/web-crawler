@@ -5,25 +5,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Speedy - Web Crawler</title>
+
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="/client/css/style.css">
 </head>
 
-<body>
+<body class="bg-dark text-light"> <!-- جعل الخلفية داكنة والنص فاتح -->
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary"> <!-- استخدام ألوان مخصصة -->
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="#">Speedy</a>
+      <a class="navbar-brand fw-bold text-light" href="#">Speedy</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="/client/html/index.html">Home</a>
-          <a class="nav-link" href="/client/html/Scanner.html">Scanner</a>
+          <a class="nav-link active text-light" aria-current="page" href="/client/html/index.html">Home</a>
+          <a class="nav-link text-light" href="/client/html/Scanner.html">Scanner</a>
         </div>
       </div>
     </div>
@@ -34,45 +37,43 @@
   <div class="container text-center my-5">
     <div class="row align-items-center">
       <div class="col-lg-6">
-        <h2 class="fw-bold">🚀 Speedy</h2>
+        <h1 class="fw-bold text-info"> Speedy</h1>
         <p class="lead">
           <b>Speedy</b> automates <b>web crawling & vulnerability scanning</b>, helping
           <b>pentesters & bug hunters</b> find security flaws <b>faster & more efficiently</b>.
         </p>
-        <p class="fw-semibold">💡 Focus on what matters – let automation handle the rest!</p>
-        <ul class="list-unstyled">
-          <li>🔹 Detect <b>LFI, XSS, Open Redirects</b> & more</li>
-          <li>🔹 Save time & effort with <b>fully automated scans</b></li>
-          <li>🔹 Get <b>instant, detailed security reports</b></li>
-        </ul>
-        <a href="/client/html/Scanner.html" class="btn btn-primary mt-3">➡ Start Scanning Now!</a>
+        <p class="fw-semibold text-warning">💡 Focus on what matters – let automation handle the rest!</p>
+        
+        <a href="/client/html/Scanner.html" class="btn btn-info mt-3 text-dark fw-bold">➡ Start Scanning Now!</a>
       </div>
       <div class="col-lg-6">
         <img src="/client/assets/undraw_fixing-bugs_13mt.svg" alt="Crawler Image" class="img-fluid">
       </div>
     </div>
-
-    <!-- Second Row -->
-    <div class="row mt-5">
-      <div class="col-lg-6">
-        <img src="/client/assets/undraw_hacker-mind_j91b.svg" alt="Hacker Mindset" class="img-fluid">
-      </div>
-      <div class="col-lg-6">
-        <h3 class="fw-bold">🔒 Speedy – The Ultimate Cybersecurity Tool</h3>
-        <ul class="list-unstyled">
-          <li>🔹 <b>For Pentesters</b> – Eliminate repetitive tasks, scan faster.</li>
-          <li>🔹 <b>For Bug Hunters</b> – Find vulnerabilities before anyone else.</li>
-          <li>🔹 <b>For Security Researchers</b> – Gain deep insights into web security flaws.</li>
-        </ul>
-        <p class="fw-semibold">Test Smarter. Fix Faster. Stay Secure.</p>
-      </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-lg-6">
+      <img src="/client/assets/undraw_hacker-mind_j91b.svg" alt="Hacker Mindset" class="img-fluid">
+    </div>
+    <div class="col-lg-6">
+      <br>
+      <br>
+      <br>
+      <h3 class="fw-bold">🔒 Speedy – The Ultimate Cybersecurity Tool</h3>
+      <ul class="list-unstyled">
+        <li>🔹 <b>For Pentesters</b> – Eliminate repetitive tasks, scan faster.</li>
+        <li>🔹 <b>For Bug Hunters</b> – Find vulnerabilities before anyone else.</li>
+        <li>🔹 <b>For Security Researchers</b> – Gain deep insights into web security flaws.</li>
+      </ul>
+      <p class="fw-semibold">Test Smarter. Fix Faster. Stay Secure.</p>
     </div>
   </div>
+</div>
   <!-- End Hero Section -->
 
   <!-- About Section -->
   <div class="container mt-5">
-    <div class="p-4 bg-dark text-light rounded shadow">
+    <div class="p-4 bg-secondary text-light rounded shadow">
       <h2 class="mb-3">About <b class="text-info">Speedy</b></h2>
       <p class="lead">
         <b class="text-info">Speedy</b> is an advanced <b>web vulnerability scanner and crawler</b> designed to help
@@ -83,11 +84,7 @@
         <b class="text-warning">LFI</b>, <b class="text-warning">XSS</b>, and <b class="text-warning">open redirects</b>,
         and generating <b>detailed security reports</b>.
       </p>
-      <p>
-        By combining <b>intelligent reconnaissance</b> with <b>automated scanning</b>, it provides
-        <b class="text-success">fast, accurate, and actionable insights</b>.
-      </p>
-      <p>
+      <p class="fw-semibold text-success">
         With <b class="text-info">Speedy</b>, security professionals can <b>focus on critical vulnerabilities</b>
         while eliminating manual, repetitive tasks.
       </p>
@@ -95,46 +92,12 @@
   </div>
   <!-- End About Section -->
 
-  <!-- Motive & Vision Section -->
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <!-- Motive Card -->
-      <div class="col-md-6">
-        <div class="card bg-dark text-white shadow-lg border-0">
-          <div class="card-body text-center">
-            <h2 class="fw-bold">🎯 Our Motive</h2>
-            <p class="lead">
-              The rise of cyber threats makes <strong>web security more critical than ever</strong>.  
-              <strong>Speedy</strong> automates <strong>web crawling and vulnerability detection</strong>,  
-              allowing security professionals to <strong>focus on fixing issues, not just finding them</strong>.  
-              Our mission: <strong>save time, reduce effort, and deliver instant, actionable insights</strong>.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Vision Card -->
-      <div class="col-md-6 mt-4 mt-md-0">
-        <div class="card bg-dark text-white shadow-lg border-0">
-          <div class="card-body text-center">
-            <h2 class="fw-bold">🚀 Our Vision</h2>
-            <p class="lead">
-              We aim to create a <strong>more secure web ecosystem</strong>,  
-              where vulnerabilities are detected and addressed <strong>before exploitation</strong>.  
-              By integrating <strong>AI-driven automation and deep analysis</strong>,  
-              <strong>Speedy</strong> strives to be the <strong>go-to tool for cybersecurity experts worldwide</strong>.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
   <!-- End Motive & Vision Section -->
 
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
