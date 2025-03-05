@@ -1,0 +1,82 @@
+/* 🌎 Global Variables */
+:root {
+    --text: #ffffff;
+    --background: #000000;
+    --primary: #4169e1;
+    --secondary: #9A2EFF;
+    --accent: #EAEAEA;
+}
+
+/* 🎨 General Styles */
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: "Arial", sans-serif;
+}
+
+/* 🏗 Navbar */
+.navbar {
+    background-color: var(--background) !important;
+    border-bottom: 2px solid var(--accent);
+}
+
+.navbar-brand {
+    color: var(--primary) !important;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: var(--text) !important;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--secondary) !important;
+}
+
+/* 🎭 Buttons */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--text);
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #2d50b5;
+    border-color: #2d50b5;
+}
+
+/* 📦 Cards */
+.card {
+    background-color: var(--secondary);
+    color: var(--text);
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Text Colors */
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-secondary {
+    color: var(--secondary) !important;
+}
+
+.text-accent {
+    color: var(--accent) !important;
+}
+
+/* 🖼 Images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
