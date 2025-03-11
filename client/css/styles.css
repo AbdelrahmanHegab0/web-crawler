@@ -1,0 +1,70 @@
+/* style.css */
+
+/* CSS Variables for Custom Monochromatic Palette */
+:root {
+  --primary-color: #9be2e1;
+  --secondary-color: #217b7a;
+  --dark-bg: #071515;
+  --light-text: #dff4f4;
+  --accent-color: #45d1cf;
+}
+
+/* Background Colors */
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+.bg-dark {
+  background-color: var(--dark-bg) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent-color) !important;
+}
+
+/* Text Colors */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-secondary {
+  color: var(--secondary-color) !important;
+}
+
+.text-light {
+  color: var(--light-text) !important;
+}
+
+.text-accent {
+  color: var(--accent-color) !important;
+}
+
+/* Hover Effects */
+.text-hover-accent:hover {
+  color: var(--accent-color) !important;
+}
+
+.bg-hover-accent:hover {
+  background-color: var(--accent-color) !important;
+}
+
+/* Hero Section Styles */
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero h1 {
+  letter-spacing: 1px;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 0 auto;
+}
