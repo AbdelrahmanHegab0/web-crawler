@@ -1,6 +1,6 @@
 async function scanWebsite(type, domain) {
     const url = `http://127.0.0.1:8000/scan/${type}`;  
-    const payload = { target_url: domain };
+    const payload = { url: domain };
 
     try {
         const response = await fetch(url, {
