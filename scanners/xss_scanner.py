@@ -2,9 +2,13 @@ import requests
 from pprint import pprint
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
+import os
 
 # تحميل الـ payloads من ملف xss.txt
-def load_payloads(file_path="xss.txt"):
+def load_payloads(file_path=None):
+    if file_path is None:
+        file_path = os.path.join(os.path.dirname(__file__), "xss.txt")
+
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             return [line.strip() for line in f.readlines() if line.strip()]
@@ -14,7 +18,11 @@ def load_payloads(file_path="xss.txt"):
 
 # استخراج كل الـ forms من الصفحة
 def get_all_forms(url):
-    soup = bs(requests.get(url).content, "html.parser")
+    response = requests.get(url)
+    if response.status_code != 200:
+        print(f"[-] Error fetching the page: {response.status_code}")
+        return []
+    soup = bs(response.content, "html.parser")
     return soup.find_all("form")
 
 # استخراج تفاصيل الـ form
@@ -59,12 +67,13 @@ def scan_xss(url):
     payloads = load_payloads()  # تحميل الـ payloads من ملف xss.txt
     if not payloads:
         print("[-] No payloads loaded.")
-        return False
+        return {"XSS Scan Result": False}
 
     is_vulnerable = False
     for form in forms:
         form_details = get_form_details(form)
         for payload in payloads:
+            print(f"[*] Testing payload: {payload}")
             content = submit_form(form_details, url, payload).content.decode()
             if payload in content:
                 print(f"[+] XSS Detected on {url}")
@@ -73,12 +82,13 @@ def scan_xss(url):
                 is_vulnerable = True
                 break  # وقف التجربة بعد أول اكتشاف للثغرة على الفورم
 
-    return is_vulnerable
+    return {"XSS Scan Result": is_vulnerable}
 
 # تشغيل الفحص بناءً على إدخال المستخدم
 if __name__ == "__main__":
     target_url = input("[+] Enter target URL: ").strip()  # يطلب من المستخدم إدخال URL
     if target_url:
-        scan_xss(target_url)
+        result = scan_xss(target_url)
+        print(result)
     else:
         print("[-] No URL provided. Exiting...")
