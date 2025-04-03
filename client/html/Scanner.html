@@ -45,11 +45,13 @@
                     <form id="scan-form">
                         <div class="input-group input-group-xl">
                             <input type="text" id="domain-input" class="form-control fs-4 p-3" placeholder="Enter domain (e.g. example.com)">
-                            <select id="scan-type" class="form-select fs-4 p-3">
-                                <option value="xss">XSS</option>
-                                <option value="lfi">LFI</option>
-                                <option value="open_redirect">Open Redirect</option>
+                            <select id="scan-type" class="form-control">
+                                <option value="xss">XSS Scan</option>
+                                <option value="lfi">LFI Scan</option>
+                                <option value="open_redirect">Open Redirect Scan</option>
+                                <option value="crawl">Crawl Only</option>  
                             </select>
+                               
                             <button class="btn btn-primary btn-lg" type="submit">Scan Now</button>
                         </div>
                     </form>
