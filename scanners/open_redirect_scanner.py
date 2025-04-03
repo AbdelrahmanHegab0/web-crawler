@@ -1,8 +1,11 @@
 import requests
 import urllib.parse
+import os
 
 def load_payloads(file_path="open_redirect.txt"):
-    """ تحميل الـ Payloads من ملف خارجي """
+    """ بص يا بودا الحته دي عشان تجيب الpayloads من الفايل"""
+    if file_path is None:
+        file_path = os.path.join(os.path.dirname(__file__), "open_redirect.txt")
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             return [line.strip() for line in f.readlines() if line.strip()]
@@ -19,7 +22,7 @@ COOKIES = {
 }
 
 def check_open_redirect(target_url, payload):
-    """ فحص Open Redirect باستخدام الـ Payloads """
+    """ الحته دي عشان يعمل scan لل open redirect ب ال payloads """
     parsed_url = urllib.parse.urlparse(target_url)
     query = urllib.parse.parse_qs(parsed_url.query)
     
@@ -41,7 +44,7 @@ def check_open_redirect(target_url, payload):
             print(f"[⚠️] Error: {e}")
 
 def scan_open_redirect(target_url):
-    """ تشغيل فحص Open Redirect """
+    """ هنا هنشغل ال open redirect """
     payloads = load_payloads()
     if not payloads:
         print("[-] No payloads loaded. Exiting...")

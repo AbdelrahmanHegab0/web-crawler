@@ -25,7 +25,7 @@ def get_all_forms(url):
     soup = bs(response.content, "html.parser")
     return soup.find_all("form")
 
-# استخراج تفاصيل الـ form
+#هنا هنطلع تفاصيل من الموقع 
 def get_form_details(form):
     details = {}
     action = form.attrs.get("action", "").lower()
@@ -40,7 +40,7 @@ def get_form_details(form):
     details["inputs"] = inputs
     return details
 
-# إرسال البيانات للفورم
+# يبعت البيانات للفورم
 def submit_form(form_details, url, value):
     target_url = urljoin(url, form_details["action"])
     inputs = form_details["inputs"]
@@ -59,12 +59,12 @@ def submit_form(form_details, url, value):
     else:
         return requests.get(target_url, params=data)
 
-# فحص XSS
+# scan XSS
 def scan_xss(url):
     forms = get_all_forms(url)
     print(f"[+] Detected {len(forms)} forms on {url}.")
     
-    payloads = load_payloads()  # تحميل الـ payloads من ملف xss.txt
+    payloads = load_payloads()  # ياخد ال paylods من الفايل اللي محطوط
     if not payloads:
         print("[-] No payloads loaded.")
         return {"XSS Scan Result": False}
@@ -80,13 +80,13 @@ def scan_xss(url):
                 print(f"[*] Form details:")
                 pprint(form_details)
                 is_vulnerable = True
-                break  # وقف التجربة بعد أول اكتشاف للثغرة على الفورم
+                break  # انه يوقف كل حاجه بعد اول واحده يلاقيها
 
     return {"XSS Scan Result": is_vulnerable}
 
-# تشغيل الفحص بناءً على إدخال المستخدم
+# الاسكان هيشتغل بناءا علي التارجت بتاع اليوزر
 if __name__ == "__main__":
-    target_url = input("[+] Enter target URL: ").strip()  # يطلب من المستخدم إدخال URL
+    target_url = input("[+] Enter target URL: ").strip()  # يطلب من اليوزر انه يدخل URL
     if target_url:
         result = scan_xss(target_url)
         print(result)

@@ -2,7 +2,9 @@ import requests
 import os
 
 def load_payloads(file_path="lfi.txt"):
-    """ تحميل الـ Payloads من ملف خارجي """
+ #هنجيب ال payloads من فايل برا
+    if file_path is None:
+        file_path = os.path.join(os.path.dirname(__file__), "lfi.txt")
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             return [line.strip() for line in f.readlines() if line.strip()]
@@ -19,7 +21,7 @@ COOKIES = {
 }
 
 def check_lfi(target_url, payload):
-    """ فحص LFI باستخدام الـ Payloads """
+  #هنشغل lfi بال payloads
     target = f"{target_url}{payload}"
     try:
         response = requests.get(target, headers=HEADERS, cookies=COOKIES, timeout=5)
@@ -37,7 +39,7 @@ def check_lfi(target_url, payload):
         print(f"[⚠️] Error: {e}")
 
 def scan_lfi(target_url):
-    """ تشغيل فحص LFI """
+#هنشغل ال lfi
     payloads = load_payloads()
     if not payloads:
         print("[-] No payloads loaded. Exiting...")
