@@ -3,7 +3,7 @@ async function scanWebsite(domain, selectedScanners) {
     const url = `http://127.0.0.1:8000/scan/`; // رابط الـ backend الذي يعالج الفحص
     const payload = {
         url: domain,
-        scanners: selectedScanners.length > 0 ? selectedScanners : ["all"]
+        scanners: selectedScanners.length > 0 ? selectedScanners : []  // إرسال الماسحات المحددة فقط
     };
 
     try {
@@ -48,6 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // التحقق من وجود الدومين
         if (!domain) {
             resultContainer.innerHTML = `<p class="text-danger">Please enter a valid domain.</p>`;
+            return;
+        }
+
+        // التحقق من وجود خيارات للمسح
+        if (selectedScanners.length === 0) {
+            resultContainer.innerHTML = `<p class="text-danger">Please select at least one scanner (XSS, LFI, or Open Redirect).</p>`;
             return;
         }
 
