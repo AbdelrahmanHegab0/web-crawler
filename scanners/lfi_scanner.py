@@ -2,16 +2,17 @@ import requests
 import os
 
 def load_payloads(file_path="lfi.txt"):
- #هنجيب ال payloads من فايل برا
-    if file_path is None:
-        file_path = os.path.join(os.path.dirname(__file__), "lfi.txt")
+    file_path = "D:\GitHub\web-crawler\scanners\lfi.txt"  # استبدل هذا بالمسار الصحيح
+    if not os.path.exists(file_path):
+        print(f"[-] Payload file not found: {file_path}")
+        return []
+    
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             return [line.strip() for line in f.readlines() if line.strip()]
-    except FileNotFoundError:
-        print(f"[-] Payload file not found: {file_path}")
+    except Exception as e:
+        print(f"[⚠️] Error reading payload file: {e}")
         return []
-
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 }
@@ -21,7 +22,7 @@ COOKIES = {
 }
 
 def check_lfi(target_url, payload):
-  #هنشغل lfi بال payloads
+    # تنفيذ الفحص باستخدام الـ payload
     target = f"{target_url}{payload}"
     try:
         response = requests.get(target, headers=HEADERS, cookies=COOKIES, timeout=5)
@@ -39,8 +40,8 @@ def check_lfi(target_url, payload):
         print(f"[⚠️] Error: {e}")
 
 def scan_lfi(target_url):
-#هنشغل ال lfi
-    payloads = load_payloads()
+    # بدء الفحص
+    payloads = load_payloads()  # تحميل الـ payloads من الفايل
     if not payloads:
         print("[-] No payloads loaded. Exiting...")
         return
