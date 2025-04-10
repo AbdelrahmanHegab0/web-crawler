@@ -42,28 +42,17 @@
                 <form id="scan-form">
                     <div class="input-group input-group-xl">
                         <input type="text" id="domain-input" class="form-control fs-4 p-3" placeholder="Enter domain (e.g. example.com)">
-                        <div id="scanner-options" class="form-group">
-                            <label for="scan-types">Select Scan Types:</label>
-                            <div class="toggle-group">
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="xss-scan" class="toggle-input">
-                                    <span class="toggle-slider"></span>
-                                    XSS Scan
-                                </label>
-
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="lfi-scan" class="toggle-input">
-                                    <span class="toggle-slider"></span>
-                                    LFI Scan
-                                </label>
-
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="redirect-scan" class="toggle-input">
-                                    <span class="toggle-slider"></span>
-                                    Open Redirect Scan
-                                </label>
-                            </div>
+                        <div id="scanner-options" class="form-group mb-4">
+                            <label for="scan-types" class="form-label fw-bold mb-2">🔍 Select Scan Type:</label>
+                            <select id="scan-types" name="scan-types" class="form-select border rounded p-2 shadow-sm">
+                                <option value="" disabled selected hidden>Choose Scan Type</option>
+                                <option value="xss"> XSS Scan</option>
+                                <option value="lfi"> LFI Scan</option>
+                                <option value="redirect"> Open Redirect Scan</option>
+                            </select>
                         </div>
+                        
+                        
                         <button class="btn btn-primary btn-lg" type="submit">Scan Now</button>
                     </div>
                 </form>
