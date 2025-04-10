@@ -21,7 +21,7 @@ app.add_middleware(
 # 📦 بيانات الريكوست
 class ScanRequest(BaseModel):
     url: str
-    scanners: list[str]  # ["xss", "lfi", "redirect"] or ["all"]
+    scanners: list[str]  # ["xss", "lfi", "redirect"]
 
 @app.get("/")
 def home():
@@ -43,15 +43,15 @@ def scan_website(data: ScanRequest):
     for link in crawl_results.get("links", []):
         result = {"url": link}
 
-        if "all" in selected_scanners or "xss" in selected_scanners:
+        if "xss" in selected_scanners:
             xss_result = scan_xss(link)
             result["XSS"] = xss_result if xss_result else "No XSS vulnerabilities detected"
 
-        if "all" in selected_scanners or "lfi" in selected_scanners:
+        if "lfi" in selected_scanners:
             lfi_result = scan_lfi(link)
             result["LFI"] = lfi_result if lfi_result else "No LFI vulnerabilities detected"
 
-        if "all" in selected_scanners or "redirect" in selected_scanners:
+        if "redirect" in selected_scanners:
             redirect_result = scan_open_redirect(link)
             result["Open Redirect"] = redirect_result if redirect_result else "No Open Redirect vulnerabilities detected"
 
@@ -59,11 +59,11 @@ def scan_website(data: ScanRequest):
 
     # جمع معلومات الـ payloads المستخدمة
     payloads_used = []
-    if "all" in selected_scanners or "xss" in selected_scanners:
+    if "xss" in selected_scanners:
         payloads_used.append("XSS Payloads")
-    if "all" in selected_scanners or "lfi" in selected_scanners:
+    if "lfi" in selected_scanners:
         payloads_used.append("LFI Payloads")
-    if "all" in selected_scanners or "redirect" in selected_scanners:
+    if "redirect" in selected_scanners:
         payloads_used.append("Redirect Payloads")
 
     # توليد محتوى التقرير بصيغة نصية
