@@ -1,9 +1,13 @@
-// ✅ دالة المسح XSS
-async function scanWebsite(type, domain) {
-    const url = `http://127.0.0.1:8000/scan/${type}`;
-    const payload = { url: domain };
+// ✅ دالة المسح (تشمل الكراول + الاسكان مع بعض)
+async function scanWebsite(domain, selectedScanners) {
+    const url = `http://127.0.0.1:8000/scan/`; // رابط الـ backend الذي يعالج الفحص
+    const payload = {
+        url: domain,
+        scanners: selectedScanners.length > 0 ? selectedScanners : ["all"]
+    };
 
     try {
+        // إرسال البيانات إلى الـ API
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -12,40 +16,23 @@ async function scanWebsite(type, domain) {
             body: JSON.stringify(payload)
         });
 
+        // إذا كانت الاستجابة غير ناجحة
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const result = await response.json();
-        return result;
+        // استلام النتيجة كـ Blob (ملف)
+        const blob = await response.blob();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "scan_report.txt";  // اسم الملف
+        link.click();  // تشغيل التحميل
     } catch (error) {
         console.error("Scan failed:", error);
         return { error: "Failed to scan the website. Please try again." };
     }
 }
 
-// ✅ دالة جديدة لاستدعاء الـ Crawler
-async function crawlWebsite(domain) {
-    const url = `http://127.0.0.1:8000/crawl?url=${encodeURIComponent(domain)}`;
-
-    console.log("[*] Sending crawl request to:", url); // ✅ Debugging
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log("[+] Crawl Results:", result); // ✅ تأكد إن الرد وصل
-        return result;
-    } catch (error) {
-        console.error("Crawling failed:", error);
-        return { error: "Failed to crawl the website. Please try again." };
-    }
-}
-
-// ✅ استدعاء الفحص أو الزحف بناءً على الاختيار
 document.addEventListener("DOMContentLoaded", function () {
     const scanForm = document.getElementById("scan-form");
     const resultContainer = document.getElementById("scan-result");
@@ -54,29 +41,27 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
         const domainInput = document.getElementById("domain-input");
-        const scanType = document.getElementById("scan-type");
-
         const domain = domainInput.value.trim();
-        const type = scanType.value;
+        const selectedScanners = Array.from(document.querySelectorAll('#scanner-options input[type="checkbox"]:checked'))
+                              .map(cb => cb.value);
 
+        // التحقق من وجود الدومين
         if (!domain) {
             resultContainer.innerHTML = `<p class="text-danger">Please enter a valid domain.</p>`;
             return;
         }
 
+        // عرض رسالة "Processing..." أثناء انتظار النتيجة
         resultContainer.innerHTML = `<p class="text-info">Processing... Please wait.</p>`;
 
-        let result;
-        if (type === "crawl") {
-            result = await crawlWebsite(domain);
-        } else {
-            result = await scanWebsite(type, domain);
-        }
+        // إجراء الفحص باستخدام دالة scanWebsite
+        const result = await scanWebsite(domain, selectedScanners);
 
+        // عرض النتيجة بناءً على النتيجة
         if (result.error) {
             resultContainer.innerHTML = `<p class="text-danger">${result.error}</p>`;
         } else {
-            resultContainer.innerHTML = `<pre class="text-light bg-dark p-3">${JSON.stringify(result, null, 2)}</pre>`;
+            resultContainer.innerHTML = `<p class="text-info">Your scan report is ready. <a href="#" onclick="scanWebsite('${domain}', ${JSON.stringify(selectedScanners)})">Download the report</a>.</p>`;
         }
     });
 });
