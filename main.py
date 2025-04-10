@@ -65,21 +65,25 @@ def scan_website(data: ScanRequest):
         payloads_used.append("LFI Payloads")
     if "all" in selected_scanners or "redirect" in selected_scanners:
         payloads_used.append("Redirect Payloads")
-    
+
     # توليد محتوى التقرير بصيغة نصية
-    report_content = f"Scan Report for {data.url}\n\n"
+    report_content = f"==============================\n"
+    report_content += f"🕵️ Vulnerability Report\n"
+    report_content += f"==============================\n\n"
+    report_content += f"🌐 Target Domain:\n{data.url}\n\n"
     report_content += f"Scanners Used: {', '.join(selected_scanners)}\n"
     report_content += f"Payloads Used: {', '.join(payloads_used)}\n\n"
 
     for result in scan_results:
-        report_content += f"URL: {result['url']}\n"
+        report_content += f"------------------------------\n"
+        report_content += f"🔍 Vulnerable URL:\n{result['url']}\n"
         if 'XSS' in result:
-            report_content += f"  XSS: {result['XSS']}\n"
+            report_content += f"\n🔑 XSS:\n{result['XSS']}\n"
         if 'LFI' in result:
-            report_content += f"  LFI: {result['LFI']}\n"
+            report_content += f"\n🔑 LFI:\n{result['LFI']}\n"
         if 'Open Redirect' in result:
-            report_content += f"  Open Redirect: {result['Open Redirect']}\n"
-        report_content += "\n"
+            report_content += f"\n🔑 Open Redirect:\n{result['Open Redirect']}\n"
+        report_content += f"\n"
 
     # إنشاء ملف .txt في الذاكرة
     report_file = io.StringIO(report_content)
