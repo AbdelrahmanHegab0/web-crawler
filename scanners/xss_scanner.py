@@ -3,6 +3,8 @@ from pprint import pprint
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
 import os
+from tenacity import retry, stop_after_attempt, wait_fixed
+import time
 
 # تحميل الـ payloads من ملف xss.txt
 def load_payloads(file_path=None):
@@ -25,7 +27,7 @@ def get_all_forms(url):
     soup = bs(response.content, "html.parser")
     return soup.find_all("form")
 
-#هنا هنطلع تفاصيل من الموقع 
+# هنا هنطلع تفاصيل من الموقع 
 def get_form_details(form):
     details = {}
     action = form.attrs.get("action", "").lower()
@@ -59,6 +61,17 @@ def submit_form(form_details, url, value):
     else:
         return requests.get(target_url, params=data)
 
+# دالة إعادة المحاولة في اختبار XSS
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))  # إعادة المحاولة 3 مرات مع الانتظار 2 ثانية بين المحاولات
+def check_xss_vulnerability(url, form_details, payload):
+    content = submit_form(form_details, url, payload).content.decode()
+    if payload in content:
+        print(f"[+] XSS Detected on {url}")
+        print(f"[*] Form details:")
+        pprint(form_details)
+        return True
+    return False
+
 # scan XSS
 def scan_xss(url):
     forms = get_all_forms(url)
@@ -74,13 +87,13 @@ def scan_xss(url):
         form_details = get_form_details(form)
         for payload in payloads:
             print(f"[*] Testing payload: {payload}")
-            content = submit_form(form_details, url, payload).content.decode()
-            if payload in content:
-                print(f"[+] XSS Detected on {url}")
-                print(f"[*] Form details:")
-                pprint(form_details)
-                is_vulnerable = True
-                break  # انه يوقف كل حاجه بعد اول واحده يلاقيها
+            try:
+                if check_xss_vulnerability(url, form_details, payload):
+                    is_vulnerable = True
+                    break  # انه يوقف كل حاجه بعد اول واحده يلاقيها
+            except Exception as e:
+                print(f"[⚠️] Error: {e}")
+                time.sleep(1)  # التأخير بين المحاولات
 
     return {"XSS Scan Result": is_vulnerable}
 
