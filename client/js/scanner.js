@@ -32,7 +32,6 @@ async function scanWebsite(domain, selectedScanners) {
         return { error: "Failed to scan the website. Please try again." };
     }
 }
-
 document.addEventListener("DOMContentLoaded", function () {
     const scanForm = document.getElementById("scan-form");
     const resultContainer = document.getElementById("scan-result");
@@ -42,8 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const domainInput = document.getElementById("domain-input");
         const domain = domainInput.value.trim();
-        const selectedScanners = Array.from(document.querySelectorAll('#scanner-options input[type="checkbox"]:checked'))
-                              .map(cb => cb.value);
+        const selectedScanner = document.getElementById('scan-types').value;  // تعديل هنا لاختيار نوع الفحص من الـ dropdown
 
         // التحقق من وجود الدومين
         if (!domain) {
@@ -51,9 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // التحقق من وجود خيارات للمسح
-        if (selectedScanners.length === 0) {
-            resultContainer.innerHTML = `<p class="text-danger">Please select at least one scanner (XSS, LFI, or Open Redirect).</p>`;
+        // التحقق من وجود اختيار لنوع الفحص
+        if (!selectedScanner) {
+            resultContainer.innerHTML = `<p class="text-danger">Please select a scan type (XSS, LFI, or Open Redirect).</p>`;
             return;
         }
 
@@ -61,13 +59,13 @@ document.addEventListener("DOMContentLoaded", function () {
         resultContainer.innerHTML = `<p class="text-info">Processing... Please wait.</p>`;
 
         // إجراء الفحص باستخدام دالة scanWebsite
-        const result = await scanWebsite(domain, selectedScanners);
+        const result = await scanWebsite(domain, [selectedScanner]);
 
         // عرض النتيجة بناءً على النتيجة
         if (result.error) {
             resultContainer.innerHTML = `<p class="text-danger">${result.error}</p>`;
         } else {
-            resultContainer.innerHTML = `<p class="text-info">Your scan report is ready. <a href="#" onclick="scanWebsite('${domain}', ${JSON.stringify(selectedScanners)})">Download the report</a>.</p>`;
+            resultContainer.innerHTML = `<p class="text-info">Your scan report is ready. <a href="#" onclick="scanWebsite('${domain}', [${selectedScanner}])">Download the report</a>.</p>`;
         }
     });
 });
