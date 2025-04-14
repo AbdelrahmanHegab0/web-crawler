@@ -29,18 +29,20 @@ def home():
 
 @app.post("/scan/")
 def scan_website(data: ScanRequest):
-    # 🕷️ Step 1: Crawl first
+    # 🕷️ Step 1: Try crawling
     crawl_results = crawl_page(data.url)
-
-    # التحقق من وجود روابط من الكراول
-    if "error" in crawl_results or not crawl_results.get("links"):
-        return {"error": "Crawling failed or no URLs found to scan."}
-
     selected_scanners = data.scanners
     scan_results = []
 
+    # Determine links to scan: if no crawlable links, scan the base URL directly
+    links_to_scan = []
+    if "error" in crawl_results or not crawl_results.get("links"):
+        links_to_scan = [data.url]
+    else:
+        links_to_scan = crawl_results.get("links", [])
+
     # فحص الروابط باستخدام الأدوات المختارة
-    for link in crawl_results.get("links", []):
+    for link in links_to_scan:
         result = {"url": link}
 
         if "xss" in selected_scanners:
@@ -68,21 +70,21 @@ def scan_website(data: ScanRequest):
 
     # توليد محتوى التقرير بصيغة نصية
     report_content = f"==============================\n"
-    report_content += f"🕵️ Vulnerability Report\n"
+    report_content += f"\U0001F575️ Vulnerability Report\n"
     report_content += f"==============================\n\n"
-    report_content += f"🌐 Target Domain:\n{data.url}\n\n"
+    report_content += f"\U0001F310 Target Domain:\n{data.url}\n\n"
     report_content += f"Scanners Used: {', '.join(selected_scanners)}\n"
     report_content += f"Payloads Used: {', '.join(payloads_used)}\n\n"
 
     for result in scan_results:
         report_content += f"------------------------------\n"
-        report_content += f"🔍 Vulnerable URL:\n{result['url']}\n"
+        report_content += f"\U0001F50D Vulnerable URL:\n{result['url']}\n"
         if 'XSS' in result:
-            report_content += f"\n🔑 XSS:\n{result['XSS']}\n"
+            report_content += f"\n\U0001F511 XSS:\n{result['XSS']}\n"
         if 'LFI' in result:
-            report_content += f"\n🔑 LFI:\n{result['LFI']}\n"
+            report_content += f"\n\U0001F511 LFI:\n{result['LFI']}\n"
         if 'Open Redirect' in result:
-            report_content += f"\n🔑 Open Redirect:\n{result['Open Redirect']}\n"
+            report_content += f"\n\U0001F511 Open Redirect:\n{result['Open Redirect']}\n"
         report_content += f"\n"
 
     # إنشاء ملف .txt في الذاكرة
