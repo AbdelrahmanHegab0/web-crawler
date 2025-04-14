@@ -5,17 +5,20 @@ from urllib.parse import urljoin, urlparse, urlunparse
 
 # Function to normalize and correct the URL
 def normalize_url(url):
-    pattern = r"(https?://)?(www\.)?(\w+\.\w+)\w*"
+    # Regular expression to ensure we add "https://" and "www."
+    pattern = r"^(https?://)?(www\.)?(\w+\.\w+)\w*"
     url = re.sub(pattern, r"https://www.\3", url)
     return url
 
 # Function to normalize full URLs (remove fragments, query strings)
 def normalize_full_url(full_url):
     parsed = urlparse(full_url)
-    return urlunparse((parsed.scheme, parsed.netloc, parsed.path, '', '', ''))  # Strip query and fragment
+    # Strip out query and fragment part of the URL
+    return urlunparse((parsed.scheme, parsed.netloc, parsed.path, '', '', ''))
 
 # Function to check if a URL is valid
 def is_valid_url(url):
+    # Regular expression to check if the URL is valid
     pattern = r"^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$"
     return re.match(pattern, url) is not None
 
@@ -25,7 +28,7 @@ def fetch_page(url):
     try:
         print(f"[*] Fetching URL: {url}")
         response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
+        response.raise_for_status()  # Raise an error for bad status codes
         return response
     except requests.exceptions.RequestException as e:
         print(f"Error fetching the page: {e}")
@@ -34,7 +37,7 @@ def fetch_page(url):
 # Function to perform crawling
 def crawl_page(url):
     seen_urls = set()
-    url = normalize_url(url)
+    url = normalize_url(url)  # Normalize the URL first
     response = fetch_page(url)
 
     if not response:
@@ -51,7 +54,7 @@ def crawl_page(url):
     links = soup.find_all('a')
     for link in links:
         href = link.get('href')
-        if href and not href.startswith(('javascript', '#')):
+        if href and not href.startswith(('javascript', '#')):  # Filter out JavaScript and anchor links
             full_url = urljoin(base_url, href)
             normalized_url = normalize_full_url(full_url)
             if normalized_url not in seen_urls and is_valid_url(normalized_url):
@@ -81,4 +84,3 @@ def crawl_page(url):
         "scripts": found_scripts,
         "images": found_images
     }
-

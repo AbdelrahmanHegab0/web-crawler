@@ -6,6 +6,7 @@ from scanners.lfi_scanner import scan_lfi
 from scanners.xss_scanner import scan_xss
 from scanners.open_redirect_scanner import scan_open_redirect
 import io
+import requests
 
 app = FastAPI()
 
@@ -34,7 +35,7 @@ def scan_website(data: ScanRequest):
     selected_scanners = data.scanners
     scan_results = []
 
-    # Determine links to scan: if no crawlable links, scan the base URL directly
+    # تحديد الروابط للفحص: إذا لم توجد روابط قابلة للفحص، يتم فحص الرابط الأساسي
     links_to_scan = []
     if "error" in crawl_results or not crawl_results.get("links"):
         links_to_scan = [data.url]
@@ -79,12 +80,24 @@ def scan_website(data: ScanRequest):
     for result in scan_results:
         report_content += f"------------------------------\n"
         report_content += f"\U0001F50D Vulnerable URL:\n{result['url']}\n"
+        
         if 'XSS' in result:
             report_content += f"\n\U0001F511 XSS:\n{result['XSS']}\n"
+        
         if 'LFI' in result:
-            report_content += f"\n\U0001F511 LFI:\n{result['LFI']}\n"
+            lfi_result = result.get('LFI', {})
+            if lfi_result["status"]:
+                report_content += f"\n\U0001F511 LFI:\nFound with payloads: {', '.join(lfi_result['payloads'])}\nDetails: {lfi_result['details']}\n"
+            else:
+                report_content += f"\n\U0001F511 LFI:\n{lfi_result['details']}\n"
+        
         if 'Open Redirect' in result:
-            report_content += f"\n\U0001F511 Open Redirect:\n{result['Open Redirect']}\n"
+            redirect_result = result.get('Open Redirect', {})
+            if redirect_result["status"]:
+                report_content += f"\n\U0001F511 Open Redirect:\nRedirected to: {', '.join(redirect_result['redirects'])}\nDetails: {redirect_result['details']}\n"
+            else:
+                report_content += f"\n\U0001F511 Open Redirect:\n{redirect_result['details']}\n"
+        
         report_content += f"\n"
 
     # إنشاء ملف .txt في الذاكرة
