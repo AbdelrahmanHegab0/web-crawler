@@ -61,6 +61,13 @@
   --accent-950: #070613;
 }
 
+body {
+  font-family: "JetBrains Mono", monospace;
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+
+
 /* Background Colors */
 .bg-primary {
   background-color: var(--primary-500) !important;
@@ -104,19 +111,64 @@
   background-color: var(--accent-400) !important;
 }
 
-/* Hero Section Styles */
-.hero {
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Navbar Active Link */
+.navbar .nav-link.active {
+  color: var(--primary-500) !important;
+  font-weight: bold;
 }
 
-.hero h1 {
-  letter-spacing: 1px;
+/* Navbar Background */
+.navbar.bg-dark {
+  background-color: var(--background-900) !important;
 }
 
-.hero p {
-  max-width: 600px;
-  margin: 0 auto;
+/* Form Inputs */
+input.form-control, select.form-select {
+  background-color: var(--background-800) !important;
+  color: var(--text-100) !important;
+  border: 1px solid var(--background-700) !important;
+}
+
+input.form-control:focus, select.form-select:focus {
+  border-color: var(--primary-500) !important;
+  box-shadow: 0 0 0 0.2rem rgba(53, 45, 210, 0.25);
+}
+
+/* Button Hover Effects */
+.btn:hover {
+  background-color: var(--primary-400) !important;
+  border-color: var(--primary-500) !important;
+}
+
+/* Table Styling */
+table.table-dark {
+  background-color: var(--background-800) !important;
+  color: var(--text-100) !important;
+}
+
+table.table-dark th {
+  background-color: var(--background-700) !important;
+  color: var(--text-100) !important;
+}
+
+table.table-dark td {
+  background-color: var(--background-800) !important;
+}
+
+/* Card Styling */
+.card {
+  border-radius: 15px;
+}
+
+.card-body {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.scanner-card {
+  max-width: 700px;
+  margin: auto;
 }
