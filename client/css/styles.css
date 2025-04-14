@@ -121,113 +121,159 @@
   margin: 0 auto;
 }
 
-  .timeline {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    opacity: 0; /* Initially hidden */
-    animation: fadeInUp 1s forwards;
-  }
+body {
+  font-family: "JetBrains Mono", monospace;
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
 
-  /* Timeline Step */
-  .timeline-step {
-    display: flex;
+.navbar {
+  border-bottom: 1px solid #21262d;
+}
+
+.text-accent {
+  color: #58a6ff !important;
+}
+
+.btn-primary {
+  background-color: #238636;
+  border: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #2ea043;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #161b22;
+  color: #58a6ff;
+}
+
+.accordion-button {
+  font-weight: 600;
+}
+
+img {
+  max-height: 350px;
+}
+
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  opacity: 0; /* Initially hidden */
+  animation: fadeInUp 1s forwards;
+}
+
+/* Timeline Step */
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 22%;
+  margin-bottom: 2rem;
+  text-align: center;
+  opacity: 0;
+  animation: slideUp 1s forwards;
+  animation-delay: 0.5s; /* Delay for better stagger effect */
+}
+
+.timeline-step:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.timeline-step:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.timeline-step:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.timeline-step:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+/* Timeline Icon */
+.timeline-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect for Icons */
+.timeline-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Timeline Content */
+.timeline-content {
+  margin-top: 1rem;
+  width: 100%;
+  opacity: 0;
+  animation: fadeInUp 1s forwards;
+}
+
+.timeline-content h5 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.timeline-content p {
+  font-size: 1rem;
+  color: #ddd;
+}
+
+/* Fade-in Up Animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide-up Animation */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .timeline {
     flex-direction: column;
     align-items: center;
-    position: relative;
-    width: 22%;
-    margin-bottom: 2rem;
-    text-align: center;
-    opacity: 0;
-    animation: slideUp 1s forwards;
-    animation-delay: 0.5s; /* Delay for better stagger effect */
   }
 
-  .timeline-step:nth-child(1) {
-    animation-delay: 0.2s;
+  .timeline-step {
+    width: 80%;
   }
-  .timeline-step:nth-child(2) {
-    animation-delay: 0.4s;
-  }
-  .timeline-step:nth-child(3) {
-    animation-delay: 0.6s;
-  }
-  .timeline-step:nth-child(4) {
-    animation-delay: 0.8s;
-  }
-
-  /* Timeline Icon */
-  .timeline-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-
-  /* Hover Effect for Icons */
-  .timeline-icon:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  /* Timeline Content */
-  .timeline-content {
-    margin-top: 1rem;
-    width: 100%;
-    opacity: 0;
-    animation: fadeInUp 1s forwards;
-  }
-
-  .timeline-content h5 {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #fff;
-  }
-
-  .timeline-content p {
-    font-size: 1rem;
-    color: #ddd;
-  }
-
-  /* Fade-in Up Animation */
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Slide-up Animation */
-  @keyframes slideUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Responsive Design for Smaller Screens */
-  @media (max-width: 768px) {
-    .timeline {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .timeline-step {
-      width: 80%;
-    }
-  }
+}
