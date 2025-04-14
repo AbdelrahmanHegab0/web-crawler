@@ -98,7 +98,7 @@ body {
 }
 
 .text-accent {
-  color: var(--accent-500) !important;
+  color: var(--accent-700) !important;
 }
 
 /* Hover Effects */
@@ -178,3 +178,4 @@ table.table-dark td {
   max-width: 700px;
   margin: auto;
 }
+

@@ -4,6 +4,35 @@
   height: 50dvh;
 }
 
+.typing-effect {
+  font-family: "Courier New", Courier, monospace; /* Ensures the effect works well with monospace fonts */
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 4px solid rgba(255, 255, 255, 0.75); /* Creates the typing cursor effect */
+  animation: typing 4s steps(60) 1s 1 normal both, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.btn {
+  width: fit-content;
+  text-align: center;
+}
+
 .btn-accent {
   background-color: var(--accent-500);
   color: var(--text-50);
