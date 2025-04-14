@@ -63,10 +63,9 @@
 
 body {
   font-family: "JetBrains Mono", monospace;
-  background-color: #0d1117;
+  background-color: var(--primary-900);
   color: #c9d1d9;
 }
-
 
 /* Background Colors */
 .bg-primary {
@@ -112,6 +111,11 @@ body {
 }
 
 /* Navbar Active Link */
+.navbar {
+background-color: var(--primary-900);
+  border-bottom: 1px solid var(--accent-400);
+}
+
 .navbar .nav-link.active {
   color: var(--primary-500) !important;
   font-weight: bold;
@@ -123,13 +127,15 @@ body {
 }
 
 /* Form Inputs */
-input.form-control, select.form-select {
+input.form-control,
+select.form-select {
   background-color: var(--background-800) !important;
   color: var(--text-100) !important;
   border: 1px solid var(--background-700) !important;
 }
 
-input.form-control:focus, select.form-select:focus {
+input.form-control:focus,
+select.form-select:focus {
   border-color: var(--primary-500) !important;
   box-shadow: 0 0 0 0.2rem rgba(53, 45, 210, 0.25);
 }
@@ -161,7 +167,7 @@ table.table-dark td {
 }
 
 .card-body {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .card-title {
