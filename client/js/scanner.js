@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// ✅ شات بوت (للتفاعل مع الـ OpenAI API)
 const chatMessages = document.getElementById("chatMessages");
 const userInput = document.getElementById("userInput");
 
@@ -86,7 +85,7 @@ async function sendMessage() {
     appendMessage("Typing...", "incoming");
 
     try {
-        const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyA5eW2FyX8FC9Mp8W5h5nEnKt6MtYAHf7A", {
+        const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA5eW2FyX8FC9Mp8W5h5nEnKt6MtYAHf7A", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -123,3 +122,11 @@ async function sendMessage() {
     }
 }
 
+const chatbotContainer = document.querySelector(".chatbot-container");
+const closeChatbot = () => {
+    chatbotContainer.style.display = "none";
+}
+
+const openChatbot = ()=>{
+    chatbotContainer.style.display = "flex";
+}

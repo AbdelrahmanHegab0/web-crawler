@@ -63,7 +63,7 @@
 
 /* Global Styles */
 body {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--text-100);
   background-color: var(--background-900);
   margin: 0;
@@ -79,11 +79,18 @@ a:hover {
   color: var(--primary-300);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-50);
 }
 
-h2, h4, h5 {
+h2,
+h4,
+h5 {
   font-weight: bold;
 }
 
@@ -188,10 +195,10 @@ h2, h4, h5 {
   color: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  display: flex;
+  display: none;
   flex-direction: column;
   overflow: hidden;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .chatbot-header {
@@ -272,4 +279,16 @@ h2, h4, h5 {
 /* Loading Animation */
 #scanner-loading .spinner-border {
   border-top-color: var(--primary-500);
+}
+
+.chatbot-message-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border: 0;
+  background-color: var(--accent-500);
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  outline: none;
 }
