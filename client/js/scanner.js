@@ -76,7 +76,6 @@ function appendMessage(message, type = "incoming") {
     chatMessages.appendChild(li);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
-
 async function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
@@ -87,23 +86,26 @@ async function sendMessage() {
     appendMessage("Typing...", "incoming");
 
     try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyA5eW2FyX8FC9Mp8W5h5nEnKt6MtYAHf7A", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer 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` // حط مفتاح الـ API هنا
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "gpt-3.5-turbo",
-                messages: [{ role: "user", content: message }]
+                contents: [
+                    {
+                        parts: [{ text: message }],
+                        role: "user"
+                    }
+                ]
             })
         });
 
         const data = await response.json();
 
-        // تحقق إذا كانت data.choices موجودة
-        if (data.choices && data.choices.length > 0) {
-            const botReply = data.choices[0].message.content.trim();
+        // Gemini API بيرجع الرد في `candidates[0].content.parts[0].text`
+        if (data.candidates && data.candidates.length > 0) {
+            const botReply = data.candidates[0].content.parts[0].text.trim();
 
             // Remove "Typing..." placeholder
             const loadingMessage = document.querySelector(".message.incoming:last-child");
@@ -121,7 +123,3 @@ async function sendMessage() {
     }
 }
 
-
-function closeChatbot() {
-    document.getElementById("chatbot").style.display = "none";
-}

@@ -7,10 +7,10 @@ from scanners.xss_scanner import scan_xss
 from scanners.open_redirect_scanner import scan_open_redirect
 import io
 import requests
+from collections import defaultdict  # 🚀
 
 app = FastAPI()
 
-# إعدادات CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,30 +19,49 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 📦 بيانات الريكوست
 class ScanRequest(BaseModel):
     url: str
-    scanners: list[str]  # ["xss", "lfi", "redirect"]
+    scanners: list[str]
 
 @app.get("/")
 def home():
     return {"message": "Welcome to the Web Vulnerability Scanner API!"}
 
+# 🚀 دالة توليد Tree View من قائمة روابط
+class Node:
+    def __init__(self):
+        self.children = defaultdict(Node)
+
+    def insert(self, parts):
+        if parts:
+            self.children[parts[0]].insert(parts[1:])
+
+    def to_string(self, level=0):
+        result = ""
+        for key in sorted(self.children):
+            result += "│   " * level + "├── " + key + "\n"
+            result += self.children[key].to_string(level + 1)
+        return result
+
+def build_url_tree(urls):
+    tree = Node()
+    for url in urls:
+        parts = url.strip("/").split("/")
+        tree.insert(parts)
+    return tree.to_string()
+
 @app.post("/scan/")
 def scan_website(data: ScanRequest):
-    # 🕷️ Step 1: Try crawling
     crawl_results = crawl_page(data.url)
     selected_scanners = data.scanners
     scan_results = []
 
-    # تحديد الروابط للفحص: إذا لم توجد روابط قابلة للفحص، يتم فحص الرابط الأساسي
     links_to_scan = []
     if "error" in crawl_results or not crawl_results.get("links"):
         links_to_scan = [data.url]
     else:
         links_to_scan = crawl_results.get("links", [])
 
-    # فحص الروابط باستخدام الأدوات المختارة
     for link in links_to_scan:
         result = {"url": link}
 
@@ -60,7 +79,6 @@ def scan_website(data: ScanRequest):
 
         scan_results.append(result)
 
-    # جمع معلومات الـ payloads المستخدمة
     payloads_used = []
     if "xss" in selected_scanners:
         payloads_used.append("XSS Payloads")
@@ -69,7 +87,6 @@ def scan_website(data: ScanRequest):
     if "redirect" in selected_scanners:
         payloads_used.append("Redirect Payloads")
 
-    # توليد محتوى التقرير بصيغة نصية
     report_content = f"==============================\n"
     report_content += f"\U0001F575️ Vulnerability Report\n"
     report_content += f"==============================\n\n"
@@ -97,10 +114,17 @@ def scan_website(data: ScanRequest):
                 report_content += f"\n\U0001F511 Open Redirect:\nRedirected to: {', '.join(redirect_result['redirects'])}\nDetails: {redirect_result['details']}\n"
             else:
                 report_content += f"\n\U0001F511 Open Redirect:\n{redirect_result['details']}\n"
-        
+
         report_content += f"\n"
 
-    # إنشاء ملف .txt في الذاكرة
+    # 🚀 إضافة الشجرة النصية بعد الفحص
+    if links_to_scan and links_to_scan != [data.url]:
+        report_content += "==============================\n"
+        report_content += "\U0001F4C2 Site Structure (Tree View)\n"
+        report_content += "==============================\n"
+        tree_view = build_url_tree(links_to_scan)
+        report_content += tree_view + "\n"
+
     report_file = io.StringIO(report_content)
     response = Response(content=report_file.getvalue(), media_type="text/plain")
     response.headers["Content-Disposition"] = "attachment; filename=scan_report.txt"
