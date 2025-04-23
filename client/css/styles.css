@@ -1,4 +1,4 @@
-/* Updated CSS Variables with New Color Palette */
+/* Root Variables */
 :root {
   --text-50: #f2f2f2;
   --text-100: #e6e6e6;
@@ -61,121 +61,215 @@
   --accent-950: #070613;
 }
 
+/* Global Styles */
 body {
-  font-family: "JetBrains Mono", monospace;
-  background-color: var(--primary-900);
-  color: #c9d1d9;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-100);
+  background-color: var(--background-900);
+  margin: 0;
+  padding: 0;
 }
 
-/* Background Colors */
-.bg-primary {
-  background-color: var(--primary-500) !important;
+a {
+  color: var(--primary-400);
+  text-decoration: none;
 }
 
-.bg-secondary {
-  background-color: var(--secondary-500) !important;
+a:hover {
+  color: var(--primary-300);
 }
 
-.bg-dark {
-  background-color: var(--background-950) !important;
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-50);
 }
 
-.bg-accent {
-  background-color: var(--accent-500) !important;
-}
-
-/* Text Colors */
-.text-primary {
-  color: var(--primary-500) !important;
-}
-
-.text-secondary {
-  color: var(--secondary-500) !important;
-}
-
-.text-light {
-  color: var(--text-100) !important;
-}
-
-.text-accent {
-  color: var(--accent-700) !important;
-}
-
-/* Hover Effects */
-.text-hover-accent:hover {
-  color: var(--accent-400) !important;
-}
-
-.bg-hover-accent:hover {
-  background-color: var(--accent-400) !important;
-}
-
-/* Navbar Active Link */
-.navbar {
-background-color: var(--primary-900);
-  border-bottom: 1px solid var(--accent-400);
-}
-
-.navbar .nav-link.active {
-  color: var(--primary-500) !important;
+h2, h4, h5 {
   font-weight: bold;
 }
 
-/* Navbar Background */
-.navbar.bg-dark {
-  background-color: var(--background-900) !important;
+/* Navbar Styles */
+.navbar {
+  background-color: var(--background-800);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Form Inputs */
-input.form-control,
-select.form-select {
-  background-color: var(--background-800) !important;
-  color: var(--text-100) !important;
-  border: 1px solid var(--background-700) !important;
+.navbar .navbar-brand {
+  color: var(--primary-500);
 }
 
-input.form-control:focus,
-select.form-select:focus {
-  border-color: var(--primary-500) !important;
-  box-shadow: 0 0 0 0.2rem rgba(53, 45, 210, 0.25);
+.navbar .nav-link {
+  color: var(--text-200);
 }
 
-/* Button Hover Effects */
-.btn:hover {
-  background-color: var(--primary-400) !important;
-  border-color: var(--primary-500) !important;
+.navbar .nav-link:hover {
+  color: var(--primary-400);
 }
 
-/* Table Styling */
-table.table-dark {
-  background-color: var(--background-800) !important;
-  color: var(--text-100) !important;
+/* Button Styles */
+.btn {
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
 }
 
-table.table-dark th {
-  background-color: var(--background-700) !important;
-  color: var(--text-100) !important;
+.btn-primary {
+  background-color: var(--primary-500);
+  border: none;
 }
 
-table.table-dark td {
-  background-color: var(--background-800) !important;
+.btn-primary:hover {
+  background-color: var(--primary-400);
 }
 
-/* Card Styling */
+.btn-success {
+  background-color: var(--secondary-500);
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: var(--secondary-400);
+}
+
+.btn-lg {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+}
+
+/* Card Styles */
 .card {
-  border-radius: 15px;
+  background-color: var(--background-800);
+  border: 1px solid var(--background-700);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .card-body {
-  font-family: "JetBrains Mono", monospace;
+  color: var(--text-50);
 }
 
-.card-title {
-  font-weight: bold;
+.card .card-title {
+  font-size: 2rem;
+  color: var(--primary-500);
 }
 
-.scanner-card {
-  max-width: 700px;
-  margin: auto;
+.card .card-text {
+  color: var(--text-200);
 }
 
+/* Form Styles */
+.form-control {
+  background-color: var(--background-600);
+  color: var(--text-100);
+  border: 1px solid var(--background-500);
+}
+
+.form-control:focus {
+  background-color: var(--background-500);
+  border-color: var(--primary-500);
+}
+
+.select2-container .select2-selection--single {
+  background-color: var(--background-600);
+  color: var(--text-100);
+  border: 1px solid var(--background-500);
+}
+
+.select2-container .select2-selection--single:focus {
+  background-color: var(--background-500);
+  border-color: var(--primary-500);
+}
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  height: 450px;
+  background: #1e1e2f;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.chatbot-header {
+  background: #4b6cb7;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatbot-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.chatbot-header span {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+}
+
+.message {
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 90%;
+}
+
+.incoming {
+  background: #4b6cb7;
+  align-self: flex-start;
+}
+
+.outgoing {
+  background: #2f2f42;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.chat-input-area {
+  padding: 10px;
+  background: #2d2d40;
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input-area textarea {
+  flex: 1;
+  resize: none;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #1f1f2e;
+  color: #fff;
+  height: 50px;
+}
+
+.chat-input-area button {
+  background: #4b6cb7;
+  border: none;
+  border-radius: 6px;
+  padding: 0 16px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.chat-input-area button:hover {
+  background: #3a56a5;
+}
+
+/* Loading Animation */
+#scanner-loading .spinner-border {
+  border-top-color: var(--primary-500);
+}
