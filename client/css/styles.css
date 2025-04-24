@@ -1,64 +1,63 @@
-/* Root Variables */
 :root {
-  --text-50: #f2f2f2;
-  --text-100: #e6e6e6;
-  --text-200: #cccccc;
-  --text-300: #b3b3b3;
-  --text-400: #999999;
-  --text-500: #808080;
-  --text-600: #666666;
-  --text-700: #4d4d4d;
-  --text-800: #333333;
-  --text-900: #1a1a1a;
-  --text-950: #0d0d0d;
+  --text-50: #eaf6ff;
+  --text-100: #d4ecff;
+  --text-200: #a9d9ff;
+  --text-300: #7dc5ff;
+  --text-400: #52b2ff;
+  --text-500: #279eff;
+  --text-600: #1f7fc9;
+  --text-700: #175f94;
+  --text-800: #0f3f5e;
+  --text-900: #071f29;
+  --text-950: #030f14;
 
-  --background-50: #f2f2f2;
-  --background-100: #e6e6e6;
-  --background-200: #cccccc;
-  --background-300: #b3b3b3;
-  --background-400: #999999;
-  --background-500: #808080;
-  --background-600: #666666;
-  --background-700: #4d4d4d;
-  --background-800: #333333;
-  --background-900: #1a1a1a;
-  --background-950: #0d0d0d;
+  --background-50: #f0f8ff;
+  --background-100: #d9f0ff;
+  --background-200: #b3e1ff;
+  --background-300: #8cd2ff;
+  --background-400: #66c3ff;
+  --background-500: #40b4ff;
+  --background-600: #3390cc;
+  --background-700: #266c99;
+  --background-800: #194866;
+  --background-900: #0d2433;
+  --background-950: #06121a;
 
-  --primary-50: #ebeafb;
-  --primary-100: #d7d5f6;
-  --primary-200: #aeabed;
-  --primary-300: #8681e4;
-  --primary-400: #5d57db;
-  --primary-500: #352dd2;
-  --primary-600: #2a24a8;
-  --primary-700: #201b7e;
-  --primary-800: #151254;
-  --primary-900: #0b092a;
-  --primary-950: #050415;
+  --primary-50: #e0f0ff;
+  --primary-100: #b3d8ff;
+  --primary-200: #80bfff;
+  --primary-300: #4da6ff;
+  --primary-400: #1a8cff;
+  --primary-500: #0073e6;
+  --primary-600: #005bb4;
+  --primary-700: #004282;
+  --primary-800: #002851;
+  --primary-900: #001021;
+  --primary-950: #00080f;
 
-  --secondary-50: #ebecf9;
-  --secondary-100: #d7d9f4;
-  --secondary-200: #b0b4e8;
-  --secondary-300: #888edd;
-  --secondary-400: #6168d1;
-  --secondary-500: #3943c6;
-  --secondary-600: #2e359e;
-  --secondary-700: #222877;
-  --secondary-800: #171b4f;
-  --secondary-900: #0b0d28;
-  --secondary-950: #060714;
+  --secondary-50: #e1f3ff;
+  --secondary-100: #b5e0ff;
+  --secondary-200: #84ccff;
+  --secondary-300: #52b8ff;
+  --secondary-400: #20a3ff;
+  --secondary-500: #008ee6;
+  --secondary-600: #006fb4;
+  --secondary-700: #005082;
+  --secondary-800: #003150;
+  --secondary-900: #001320;
+  --secondary-950: #000910;
 
-  --accent-50: #edecf9;
-  --accent-100: #dad8f3;
-  --accent-200: #b5b2e6;
-  --accent-300: #918bda;
-  --accent-400: #6c65cd;
-  --accent-500: #473ec1;
-  --accent-600: #39329a;
-  --accent-700: #2b2574;
-  --accent-800: #1c194d;
-  --accent-900: #0e0c27;
-  --accent-950: #070613;
+  --accent-50: #e6f7ff;
+  --accent-100: #cceeff;
+  --accent-200: #99ddff;
+  --accent-300: #66ccff;
+  --accent-400: #33bbff;
+  --accent-500: #00aaff;
+  --accent-600: #0088cc;
+  --accent-700: #006699;
+  --accent-800: #004466;
+  --accent-900: #002233;
+  --accent-950: #00111a;
 }
 
 /* Global Styles */
@@ -66,63 +65,16 @@ body {
   font-family: "JetBrains Mono", monospace;
   color: var(--text-100);
   background-color: var(--background-900);
-  margin: 0;
-  padding: 0;
 }
 
-a {
-  color: var(--primary-400);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--primary-300);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--text-50);
-}
-
-h2,
-h4,
-h5 {
-  font-weight: bold;
-}
-
-/* Navbar Styles */
+/* Navbar */
 .navbar {
-  background-color: var(--background-800);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background-color: var(--primary-600);
 }
 
-.navbar .navbar-brand {
-  color: var(--primary-500);
-}
-
-.navbar .nav-link {
-  color: var(--text-200);
-}
-
-.navbar .nav-link:hover {
-  color: var(--primary-400);
-}
-
-/* Button Styles */
-.btn {
-  font-weight: bold;
-  border-radius: 8px;
-  padding: 10px 20px;
-  transition: background-color 0.3s ease;
-}
-
+/* Buttons */
 .btn-primary {
   background-color: var(--primary-500);
-  border: none;
 }
 
 .btn-primary:hover {
@@ -131,57 +83,33 @@ h5 {
 
 .btn-success {
   background-color: var(--secondary-500);
-  border: none;
 }
 
 .btn-success:hover {
   background-color: var(--secondary-400);
 }
 
-.btn-lg {
-  padding: 15px 30px;
-  font-size: 1.2rem;
-}
-
-/* Card Styles */
+/* Cards */
 .card {
   background-color: var(--background-800);
   border: 1px solid var(--background-700);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.card-body {
-  color: var(--text-50);
 }
 
 .card .card-title {
-  font-size: 2rem;
-  color: var(--primary-500);
+  color: var(--primary-400);
 }
 
 .card .card-text {
   color: var(--text-200);
 }
 
-/* Form Styles */
+/* Forms */
 .form-control {
   background-color: var(--background-600);
-  color: var(--text-100);
   border: 1px solid var(--background-500);
 }
 
 .form-control:focus {
   background-color: var(--background-500);
-  border-color: var(--primary-500);
-}
-
-.select2-container .select2-selection--single {
-  background-color: var(--background-600);
-  color: var(--text-100);
-  border: 1px solid var(--background-500);
-}
-
-.select2-container .select2-selection--single:focus {
-  background-color: var(--background-500);
-  border-color: var(--primary-500);
+  border-color: var(--primary-400);
 }
