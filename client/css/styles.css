@@ -1,116 +1,191 @@
 :root {
-  --text-50: #f0f4f8;
-  --text-100: #d9e2ec;
-  --text-200: #bcccdc;
-  --text-300: #9fb3c8;
-  --text-400: #829ab1;
-  --text-500: #627d98;
-  --text-600: #486581;
-  --text-700: #334e68;
-  --text-800: #243b53;
-  --text-900: #102a43;
-  --text-950: #0a1d2c;
+  /* Text colors */
+  --text-50: #f2f2f2;
+  --text-100: #e6e6e6;
+  --text-200: #cccccc;
+  --text-300: #b3b3b3;
+  --text-400: #999999;
+  --text-500: #808080;
+  --text-600: #666666;
+  --text-700: #4d4d4d;
+  --text-800: #333333;
+  --text-900: #1a1a1a;
+  --text-950: #0d0d0d;
 
-  --background-50: #f8fafc;
-  --background-100: #eef2f6;
-  --background-200: #d9e2ec;
-  --background-300: #bcccdc;
-  --background-400: #9fb3c8;
-  --background-500: #829ab1;
-  --background-600: #627d98;
-  --background-700: #486581;
-  --background-800: #334e68;
-  --background-900: #243b53;
-  --background-950: #102a43;
+  /* Background colors */
+  --background-50: #f2f2f2;
+  --background-100: #e6e6e6;
+  --background-200: #cccccc;
+  --background-300: #b3b3b3;
+  --background-400: #999999;
+  --background-500: #808080;
+  --background-600: #666666;
+  --background-700: #4d4d4d;
+  --background-800: #333333;
+  --background-900: #1a1a1a;
+  --background-950: #0d0d0d;
 
-  --primary-50: #e6f0ff;
-  --primary-100: #cce0ff;
-  --primary-200: #99c2ff;
-  --primary-300: #66a3ff;
-  --primary-400: #3385ff;
-  --primary-500: #0066ff;
-  --primary-600: #0052cc;
-  --primary-700: #003d99;
-  --primary-800: #002966;
-  --primary-900: #001433;
-  --primary-950: #000a1a;
+  /* Primary colors (Purple tones) */
+  --primary-50: #ebe9fb;
+  --primary-100: #d6d4f7;
+  --primary-200: #aea9ef;
+  --primary-300: #857ee7;
+  --primary-400: #5c53df;
+  --primary-500: #3328d7;
+  --primary-600: #2920ac;
+  --primary-700: #1f1881;
+  --primary-800: #151056;
+  --primary-900: #0a082b;
+  --primary-950: #050416;
 
-  --secondary-50: #eff6f9;
-  --secondary-100: #d9eaf2;
-  --secondary-200: #b3d5e5;
-  --secondary-300: #8dbfd7;
-  --secondary-400: #66aacc;
-  --secondary-500: #4096bf;
-  --secondary-600: #337999;
-  --secondary-700: #265c73;
-  --secondary-800: #193f4d;
-  --secondary-900: #0d2326;
-  --secondary-950: #061115;
+  /* Secondary colors (Blue tones) */
+  --secondary-50: #e8e5ff;
+  --secondary-100: #d2ccff;
+  --secondary-200: #a599ff;
+  --secondary-300: #7866ff;
+  --secondary-400: #4b33ff;
+  --secondary-500: #1e00ff;
+  --secondary-600: #1800cc;
+  --secondary-700: #120099;
+  --secondary-800: #0c0066;
+  --secondary-900: #060033;
+  --secondary-950: #03001a;
 
-  --accent-50: #eafcff;
-  --accent-100: #d1f8ff;
-  --accent-200: #a3f0ff;
-  --accent-300: #75e9ff;
-  --accent-400: #47e1ff;
-  --accent-500: #1ad9ff;
-  --accent-600: #15aecd;
-  --accent-700: #10849b;
-  --accent-800: #0a5a69;
-  --accent-900: #052f36;
-  --accent-950: #02181b;
+  /* Accent colors (Sky blue) */
+  --accent-50: #e5f4ff;
+  --accent-100: #cceaff;
+  --accent-200: #99d5ff;
+  --accent-300: #66bfff;
+  --accent-400: #33aaff;
+  --accent-500: #0095ff;
+  --accent-600: #0077cc;
+  --accent-700: #005999;
+  --accent-800: #003c66;
+  --accent-900: #001e33;
+  --accent-950: #000f1a;
 }
-
 
 /* Global Styles */
 body {
   font-family: "JetBrains Mono", monospace;
   color: var(--text-100);
-  background-color: var(--background-900);
+  background-color: var(--primary-900);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Navbar */
 .navbar {
-  background-color: var(--primary-600);
+  background-color: var(--primary-900);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  padding: 1rem 2rem;
 }
 
 /* Buttons */
 .btn-primary {
   background-color: var(--primary-500);
+  color: var(--text-50);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-primary:hover {
   background-color: var(--primary-400);
+  transform: translateY(-2px);
 }
 
 .btn-success {
   background-color: var(--secondary-500);
+  color: var(--text-50);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-success:hover {
   background-color: var(--secondary-400);
+  transform: translateY(-2px);
+}
+
+.bg-primary {
+  color: var(--primary-700);
+}
+
+.bg-accent {
+  background-color: var(--accent-600);
+  border: 3px solid var(--secondary-500);
 }
 
 /* Cards */
 .card {
-  background-color: var(--background-800);
-  border: 1px solid var(--background-700);
+  background-color: var(--secondary-900);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--secondary-400);
+}
+
+.card::before {
+  content: "";
+  border-radius: 16px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent-300);
+  z-index: -1;
+  top: 10px;
+  left: 10px;
+}
+
+.card:hover::before {
+  top: 20px;
+  left: 20px;
+  transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+  -moz-transition: 0.5s ease;
+  -ms-transition: 0.5s ease;
+  -o-transition: 0.5s ease;
 }
 
 .card .card-title {
   color: var(--primary-400);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .card .card-text {
-  color: var(--text-200);
+  color: var(--text-300);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 /* Forms */
 .form-control {
-  background-color: var(--background-600);
-  border: 1px solid var(--background-500);
+  background-color: var(--background-700);
+  border: 1px solid var(--background-600);
+  color: var(--text-100);
+  padding: 0.75rem;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .form-control:focus {
-  background-color: var(--background-500);
+  background-color: var(--background-600);
   border-color: var(--primary-400);
+  outline: none;
+}
+
+/* Utilities */
+.shadow {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.rounded {
+  border-radius: 12px;
 }

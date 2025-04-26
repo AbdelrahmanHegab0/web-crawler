@@ -55,12 +55,13 @@
 }
 
 .accordion-button:not(.collapsed) {
-  background-color: #161b22;
-  color: #58a6ff;
+  background-color: var(--accent-400);
 }
 
 .accordion-button {
   font-weight: 600;
+  background-color: var(--secondary-300);
+  border: 2px solid var(--accent-400);
 }
 
 .timeline-container {
