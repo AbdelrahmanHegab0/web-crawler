@@ -2,17 +2,6 @@ import requests
 import urllib.parse
 import os
 
-def load_payloads(file_path="open_redirect.txt"):
-    """ بص يا بودا الحته دي عشان تجيب الpayloads من الفايل"""
-    if file_path is None:
-        file_path = os.path.join(os.path.dirname(__file__), "open_redirect.txt")
-    try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            return [line.strip() for line in f.readlines() if line.strip()]
-    except FileNotFoundError:
-        print(f"[-] Payload file not found: {file_path}")
-        return []
-
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 }
@@ -21,44 +10,79 @@ COOKIES = {
     "security": "low"
 }
 
+def load_payloads(file_path=None):
+    if file_path is None:
+        file_path = r"D:\GitHub\web-crawler\scanners\open_redirect.txt"  # ✅ عدل المسار لو في مكان مختلف
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return [line.strip() for line in f.readlines() if line.strip()]
+    except FileNotFoundError:
+        print(f"[-] Payload file not found: {file_path}")
+        return []
+
 def check_open_redirect(target_url, payload):
-    """ الحته دي عشان يعمل scan لل open redirect ب ال payloads """
     parsed_url = urllib.parse.urlparse(target_url)
     query = urllib.parse.parse_qs(parsed_url.query)
+
+    vulnerable_urls = []
     
     for param in query:
         test_url = f"{target_url}&{param}={urllib.parse.quote(payload)}"
-        print(f"[🔍] Testing: {test_url}")
 
         try:
             response = requests.get(test_url, headers=HEADERS, cookies=COOKIES, allow_redirects=False, timeout=5)
-            
-            if response.status_code in [301, 302] and payload in response.headers.get("Location", ""):
-                print(f"\n[✅] Open Redirect Found: {test_url}")
-                print(f"[➡️] Redirected To: {response.headers['Location']}\n")
-            else:
-                print("[❌] Not Vulnerable")
-                print(f"[📄] Response Content:\n{response.text[:200]}\n{'-' * 80}")
+
+            location = response.headers.get("Location", "")
+            if response.status_code in [301, 302] and payload in location:
+                vulnerable_urls.append({
+                    "payload": payload,
+                    "url": test_url,
+                    "redirected_to": location
+                })
 
         except requests.RequestException as e:
-            print(f"[⚠️] Error: {e}")
+            return {
+                "status": False,
+                "details": f"Request error: {e}"
+            }
+
+    return vulnerable_urls
 
 def scan_open_redirect(target_url):
-    """ هنا هنشغل ال open redirect """
     payloads = load_payloads()
     if not payloads:
-        print("[-] No payloads loaded. Exiting...")
-        return
+        return {
+            "status": False,
+            "details": "No payloads loaded."
+        }
 
-    print("\n[+] Starting Open Redirect Scan...\n")
+    found = []
+
     for payload in payloads:
-        check_open_redirect(target_url, payload)
-    print("\n[✅] Scan Completed!")
+        result = check_open_redirect(target_url, payload)
+        if result:
+            found.extend(result)
 
+    if found:
+        formatted = [f"{item['url']} ➡ {item['redirected_to']}" for item in found]
+        return {
+            "status": True,
+            "payloads": [item["payload"] for item in found],
+            "details": "; ".join(formatted)
+        }
+    else:
+        return {
+            "status": False,
+            "details": "No Open Redirect vulnerabilities detected."
+        }
+
+# ✅ Optional: For standalone testing
 if __name__ == "__main__":
     target_url = input("[?] Enter URL (e.g., http://127.0.0.1/DVWA/vulnerabilities/redirect/?page=): ").strip()
-    
+
     if "?" not in target_url:
         print("[!] Ensure the URL has a query parameter for testing.")
     else:
-        scan_open_redirect(target_url)
+        result = scan_open_redirect(target_url)
+        print("\nScan Result:\n", result)
