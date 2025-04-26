@@ -57,10 +57,11 @@ async function sendMessage() {
 }
 
 const chatbotContainer = document.querySelector(".chatbot-container");
+
 const closeChatbot = () => {
     chatbotContainer.style.display = "none";
 }
 
-const openChatbot = ()=>{
+const openChatbot = () => {
     chatbotContainer.style.display = "flex";
 }
