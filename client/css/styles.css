@@ -189,3 +189,13 @@ body {
 .rounded {
   border-radius: 12px;
 }
+
+.back-gradiant {
+  background: #151056;
+  background: linear-gradient(
+    90deg,
+    rgba(21, 16, 86, 1) 0%,
+    rgba(75, 51, 255, 1) 70%,
+    rgba(102, 191, 255, 1) 100%
+  );
+}
