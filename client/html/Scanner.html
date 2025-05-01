@@ -20,7 +20,7 @@
 
   <!-- External CSS -->
   <link rel="stylesheet" href="/client/css/styles.css" />
-  <link rel="stylesheet" href="/client/css/chatbot.css">
+  <link rel="stylesheet" href="/client/css/chatbot.css" />
 
   <!-- googleIcons -->
   <link rel="stylesheet"
@@ -72,6 +72,8 @@
           <button class="btn btn-primary btn-lg w-100" type="submit">🚀 Scan Now</button>
         </form>
 
+        <button type="button" id="show-tree-btn" class="btn btn-secondary mt-3">Show Web Tree</button>
+
         <!-- Loading Animation -->
         <div id="scanner-loading" class="text-center mt-5" style="display: none;">
           <div class="spinner-border text-primary" role="status">
@@ -82,39 +84,6 @@
 
         <!-- Scan Result Message -->
         <div id="scan-result" class="mt-4"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Report Section -->
-  <div id="report-container" class="container mt-5" style="display:none;">
-    <div class="card text-white bg-dark shadow-lg">
-      <div class="card-body">
-        <h2 class="card-title text-center mb-4">Website Scan Report</h2>
-
-        <h4>Domain: <span id="report-domain"></span></h4>
-        <p><strong>Scanning Type:</strong> <span id="report-scan-type"></span></p>
-
-        <h5>Crawled Links:</h5>
-        <ul id="crawled-links-list"></ul>
-
-        <h5>Scan Results:</h5>
-        <table class="table table-dark table-bordered">
-          <thead>
-            <tr>
-              <th>URL</th>
-              <th>XSS</th>
-              <th>LFI</th>
-              <th>Open Redirect</th>
-            </tr>
-          </thead>
-          <tbody id="scan-results-table"></tbody>
-        </table>
-
-        <h5>Payloads Used:</h5>
-        <ul id="payloads-list"></ul>
-
-        <button id="download-report" class="btn btn-success btn-lg">Download Report</button>
       </div>
     </div>
   </div>
@@ -141,13 +110,13 @@
     </div>
   </div>
 
-
   <!-- JS Files -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
-  <script src="/client/js/scanner.js" defer></script>
-  <script src="/client//js/chatbot.js"></script>
-
+  crossorigin="anonymous"></script>
+<script src="/client/js/scanner.js" defer></script>
+<script src="/client/js/chatbot.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="/client/js/tree-visualizer.js"></script>
 </body>
 
 </html>

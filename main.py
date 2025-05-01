@@ -27,7 +27,47 @@ class ScanRequest(BaseModel):
 def home():
     return {"message": "Welcome to the Web Vulnerability Scanner API!"}
 
-# 🚀 دالة توليد Tree View من قائمة روابط
+class TreeNode:
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "children": [child.to_dict() for child in self.children]
+        }
+
+def build_tree_json(urls):
+    root = TreeNode("root")
+    nodes = {"root": root}
+
+    for url in urls:
+        parts = url.strip("/").split("/")
+        current = root
+        path = ""
+        for part in parts:
+            path += "/" + part
+            if path not in nodes:
+                new_node = TreeNode(part)
+                current.children.append(new_node)
+                nodes[path] = new_node
+            current = nodes[path]
+
+    return root.to_dict()
+
+@app.get("/site-tree/")
+def get_site_tree(url: str):
+    crawl_results = crawl_page(url)
+    links = crawl_results.get("links", [])
+
+    if not links:
+        return {"error": "No links found to build tree."}
+
+    tree_data = build_tree_json(links)
+    return tree_data
+
+# 🔧 Tree View Generator (Text-based)
 class Node:
     def __init__(self):
         self.children = defaultdict(Node)
