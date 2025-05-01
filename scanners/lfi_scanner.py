@@ -10,7 +10,7 @@ COOKIES = {
 }
 
 def load_payloads(file_path="lfi.txt"):
-    file_path = r"D:\GitHub\web-crawler\scanners\lfi.txt"  # ✅ تأكد إن المسار دا فعلاً صح
+    file_path = r"/home/kali/Downloads/web-crawler/web-crawler-main/scanners/lfi.txt"  # ✅ تأكد إن المسار دا فعلاً صح
     if not os.path.exists(file_path):
         print(f"[-] Payload file not found: {file_path}")
         return []
