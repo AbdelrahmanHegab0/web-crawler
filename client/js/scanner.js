@@ -1,42 +1,11 @@
-// ✅ دالة المسح (تشمل الكراول + الاسكان مع بعض)
-async function scanWebsite(domain, selectedScanners) {
-    const url = `http://127.0.0.1:8000/scan/`; // عنوان السيرفر المحلي
-    const payload = {
-        url: domain,
-        scanners: selectedScanners
-    };
-
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-        const blob = await response.blob();
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "scan_report.txt"; // تحميل التقرير
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        return { success: true };
-    } catch (error) {
-        console.error("Scan failed:", error);
-        return { error: "Failed to scan the website. Please try again." };
-    }
-}
 document.addEventListener("DOMContentLoaded", () => {
     const scanForm = document.getElementById("scan-form");
     const resultContainer = document.getElementById("scan-result");
     const loadingSpinner = document.getElementById("scanner-loading");
 
-    // دالة فحص الموقع (مسح + فحص أمان)
+    // ✅ دالة فحص الموقع (تقوم بالإرسال + تحميل التقرير)
     async function scanWebsite(domain, selectedScanners) {
-        const url = `http://127.0.0.1:8000/scan/`; // السيرفر المحلي
+        const url = `http://127.0.0.1:8000/scan/`;
         const payload = {
             url: domain,
             scanners: selectedScanners
@@ -52,14 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             const blob = await response.blob();
+            const objectUrl = URL.createObjectURL(blob);
+
             const link = document.createElement("a");
-            const objectUrl = URL.createObjectURL(blob); // منع تسريب الذاكرة
             link.href = objectUrl;
-            link.download = "scan_report.txt"; // تحميل التقرير
+            link.download = "scan_report.txt";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(objectUrl); // تفريغ الرابط المؤقت
+            URL.revokeObjectURL(objectUrl);
 
             return { success: true };
         } catch (error) {
@@ -68,13 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // حدث إرسال النموذج (مسح)
     scanForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const domain = document.getElementById("domain-input").value.trim();
-
-        // دعم اختيار متعدد للأنواع
         const scannerSelect = document.getElementById("scan-types");
         const selectedScanners = Array.from(scannerSelect.selectedOptions).map(opt => opt.value);
 
@@ -84,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (selectedScanners.length === 0) {
-            resultContainer.innerHTML = `<p class="text-danger">Please select at least one scan type (XSS, LFI, or Open Redirect).</p>`;
+            resultContainer.innerHTML = `<p class="text-danger">Please select at least one scan type.</p>`;
             return;
         }
 
@@ -101,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             : `<p class="text-success fw-bold">✅ Scan completed successfully. Your report has been downloaded.</p>`;
     });
 
-    // حدث زر "Show Web Tree" (الذي يختص فقط بالكراولينج)
+    // ✅ زر إظهار الشجرة (Crawling فقط)
     document.getElementById("show-tree-btn").addEventListener("click", async () => {
         const domain = document.getElementById("domain-input").value.trim();
 
@@ -110,20 +77,30 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // إرسال طلب للحصول على التراكيب فقط (Crawling)
-        const response = await fetch(`/site-tree/?url=${domain}`);
-        const data = await response.json();
+        try {
+            const response = await fetch(`/site-tree/?url=${domain}`);
+            const data = await response.json();
 
-        if (data.error) {
-            alert("No links found to build the tree.");
-            return;
+            if (data.error || !data.name) {
+                alert("No links found to build the tree.");
+                return;
+            }
+
+            // 🔁 تمرير البيانات إلى visualizer.js
+            renderTree(data, "#tree-container");
+        } catch (error) {
+            alert("Failed to load the tree.");
+            console.error(error);
         }
+    });
 
-        // عرض الشجرة
-        document.getElementById("tree-container").innerHTML = ""; // clear previous
+    // 🔁 دالة رسم الشجرة
+    function renderTree(data, containerSelector) {
+        const container = document.querySelector(containerSelector);
+        container.innerHTML = ""; // clear previous
 
         const width = 800, height = 600;
-        const svg = d3.select("#tree-container")
+        const svg = d3.select(container)
             .append("svg")
             .attr("width", width)
             .attr("height", height)
@@ -162,5 +139,5 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr('y', d => d.x + 5)
             .text(d => d.data.name)
             .attr('fill', '#eee');
-    });
+    }
 });
