@@ -7,6 +7,8 @@ from scanners.xss_scanner import scan_xss
 from scanners.open_redirect_scanner import scan_open_redirect
 import io
 from collections import defaultdict
+from urllib.parse import urlparse
+
 
 app = FastAPI()
 
@@ -18,16 +20,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 class ScanRequest(BaseModel):
     url: str
-    scanners: list[str]
-
+    scanners: list[str] = []
+    report_type: str = "both"  # 'vulnerabilities', 'structure', or 'both'
 
 @app.get("/")
 def home():
     return {"message": "Welcome to the Web Vulnerability Scanner API!"}
-
 
 class TreeNode:
     def __init__(self, name):
@@ -40,11 +40,9 @@ class TreeNode:
             "children": [child.to_dict() for child in self.children]
         }
 
-
 def build_tree_json(urls):
     root = TreeNode("root")
     nodes = {"root": root}
-
     for url in urls:
         parts = url.strip("/").split("/")
         current = root
@@ -56,15 +54,12 @@ def build_tree_json(urls):
                 current.children.append(new_node)
                 nodes[path] = new_node
             current = nodes[path]
-
     return root.to_dict()
-
 
 @app.get("/site-tree/")
 async def get_site_tree(url: str):
     site_tree = crawl_page(url)
     return {"name": url, "children": site_tree}
-
 
 class Node:
     def __init__(self):
@@ -81,13 +76,111 @@ class Node:
             result += self.children[key].to_string(level + 1)
         return result
 
-
 def build_url_tree(urls):
     tree = Node()
     for url in urls:
-        parts = url.strip("/").split("/")
-        tree.insert(parts)
+        parsed = urlparse(url)
+        netloc = parsed.netloc
+        scheme = parsed.scheme
+        path_parts = list(filter(None, parsed.path.strip("/").split("/")))
+        
+        full_parts = [scheme + ":"] if scheme else []
+        if netloc:
+            full_parts.append(netloc)
+        full_parts.extend(path_parts)
+
+        tree.insert(full_parts)
     return tree.to_string()
+
+def generate_structure_report(url, links):
+    report_content = (
+        "==============================\n"
+        "📂 Site Structure (Tree View)\n"
+        "==============================\n"
+    )
+    if links and links != [url]:
+        tree_view = build_url_tree(links)
+        report_content += tree_view
+    else:
+        report_content += "No links found to display tree structure.\n"
+    report_content += "==============================\n"
+    return report_content
+
+
+def generate_vulnerability_report(url, links, selected_scanners):
+    scan_results = []
+    payloads_used = set()
+
+    for link in links:
+        result = {"url": link}
+        if "xss" in selected_scanners:
+            xss_result = scan_xss(link)
+            result["XSS"] = xss_result if xss_result else "❌ No XSS vulnerabilities detected"
+            payloads_used.add("XSS Payloads")
+        if "lfi" in selected_scanners:
+            lfi_result = scan_lfi(link)
+            result["LFI"] = lfi_result if lfi_result else "❌ No LFI vulnerabilities detected"
+            payloads_used.add("LFI Payloads")
+        if "redirect" in selected_scanners:
+            redirect_result = scan_open_redirect(link)
+            result["Open Redirect"] = redirect_result if redirect_result else "❌ No Open Redirect vulnerabilities detected"
+            payloads_used.add("Redirect Payloads")
+        scan_results.append(result)
+
+    report_content = (
+        "==============================\n"
+        "🛡️  Vulnerability Report\n"
+        "==============================\n\n"
+        f"🌐 Target Domain: {url}\n"
+        f"🧪 Scanners Used: {', '.join(selected_scanners) if selected_scanners else 'None'}\n"
+        f"💣 Payloads Used: {', '.join(payloads_used) if payloads_used else 'None'}\n\n"
+    )
+
+    for result in scan_results:
+        report_content += "------------------------------\n"
+        report_content += f"🔗 URL: {result['url']}\n"
+        
+        # Handle XSS Vulnerability
+        if 'XSS' in result:
+            xss_data = result['XSS']
+            if isinstance(xss_data, dict) and xss_data.get("status"):
+                report_content += (
+                    f"   🔸 XSS: ✅ Found!\n"
+                    f"       • Payloads: {', '.join(xss_data['payloads'])}\n"
+                    f"       • Details: {xss_data['details']}\n"
+                )
+            else:
+                report_content += f"   🔸 XSS: {xss_data}\n"
+        
+        # Handle LFI Vulnerability
+        if 'LFI' in result:
+            lfi_data = result['LFI']
+            if isinstance(lfi_data, dict) and lfi_data.get("status"):
+                report_content += (
+                    f"   🔸 LFI: ✅ Found!\n"
+                    f"       • Payloads: {', '.join(lfi_data['payloads'])}\n"
+                    f"       • Details: {lfi_data['details']}\n"
+                )
+            else:
+                report_content += f"   🔸 LFI: {lfi_data}\n"
+        
+        # Handle Open Redirect Vulnerability
+        if 'Open Redirect' in result:
+            redir_data = result['Open Redirect']
+            if isinstance(redir_data, dict) and redir_data.get("status"):
+                report_content += (
+                    f"   🔸 Open Redirect: ✅ Found!\n"
+                    f"       • Redirects: {', '.join(redir_data['redirects'])}\n"
+                    f"       • Details: {redir_data['details']}\n"
+                )
+            else:
+                report_content += f"   🔸 Open Redirect: {redir_data}\n"
+        
+        report_content += "\n"
+
+    report_content += "==============================\n"
+    return report_content
+
 
 
 @app.post("/crawl_only")
@@ -99,58 +192,42 @@ async def crawl_only(request: Request):
 
     crawl_results = crawl_page(url)
     links = crawl_results.get("links", [])
-
     if not links:
         return {"error": "No links found"}
 
-    tree_view = build_url_tree(links)
-
-    report_content = f"==============================\n"
-    report_content += f"📂 Website Structure Report\n"
-    report_content += f"==============================\n\n"
-    report_content += f"Target: {url}\n\n"
-    report_content += tree_view + "\n"
-
+    report_content = generate_structure_report(url, links)
     report_file = io.StringIO(report_content)
-    response = Response(content=report_file.getvalue(),
-                        media_type="text/plain")
+    response = Response(content=report_file.getvalue(), media_type="text/plain")
     response.headers["Content-Disposition"] = "attachment; filename=site_structure.txt"
     return response
 
-
 @app.post("/scan/")
 def scan_website(data: ScanRequest):
+    # نفّذ الكراولينج بس
     crawl_results = crawl_page(data.url)
+    links_to_scan = [data.url] if "error" in crawl_results or not crawl_results.get("links") else crawl_results.get("links", [])
+    report_content = ""
 
-    # Run scans (optional, but not included in the report)
-    selected_scanners = data.scanners
-    scan_results = []
-    links_to_scan = []
-
-    if "error" in crawl_results or not crawl_results.get("links"):
-        links_to_scan = [data.url]
+    # لو structure بس، نفّذ الـ Tree Report بس بدون أي حاجة متعلقة بالثغرات
+    if data.report_type == "structure":
+        report_content = generate_structure_report(data.url, links_to_scan)
+    # لو vulnerabilities بس، نفّذ الـ Vulnerability Report بس
+    elif data.report_type == "vulnerabilities":
+        if not data.scanners:
+            report_content = "Error: No scanners provided for vulnerabilities report.\n"
+        else:
+            report_content = generate_vulnerability_report(data.url, links_to_scan, data.scanners)
+    # لو both، نفّذ الاتنين
+    elif data.report_type == "both":
+        report_content = generate_structure_report(data.url, links_to_scan)
+        if data.scanners:
+            report_content += "\n" + generate_vulnerability_report(data.url, links_to_scan, data.scanners)
+        else:
+            report_content += "\nNo scanners provided for vulnerabilities report.\n"
     else:
-        links_to_scan = crawl_results.get("links", [])
-
-    # Generate minimal report (target domain + tree structure only)
-    report_content = "==============================\n"
-    report_content += "🕵️ Vulnerability Report\n"
-    report_content += "==============================\n\n"
-    report_content += f"🌐 Target Domain:\n{data.url}\n\n"
-
-    # Add tree structure section
-    report_content += "==============================\n"
-    report_content += "📂 Site Structure (Tree View)\n"
-    report_content += "==============================\n"
-
-    if links_to_scan and links_to_scan != [data.url]:
-        tree_view = build_url_tree(links_to_scan)
-        report_content += tree_view + "\n"
-    else:
-        report_content += "No links found to display tree structure.\n"
+        report_content = "Error: Invalid report_type. Use 'structure', 'vulnerabilities', or 'both'.\n"
 
     report_file = io.StringIO(report_content)
-    response = Response(content=report_file.getvalue(),
-                        media_type="text/plain")
-    response.headers["Content-Disposition"] = "attachment; filename=scan_report.txt"
+    response = Response(content=report_file.getvalue(), media_type="text/plain")
+    response.headers["Content-Disposition"] = f"attachment; filename={'site_structure' if data.report_type == 'structure' else 'scan_report'}.txt"
     return response
