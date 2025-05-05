@@ -10,7 +10,7 @@ HEADERS = {
 }
 
 def load_payloads(file_path=None):
-    # Same behavior as your LFI scanner
+    
     file_path = file_path or r"D:/GitHub/web-crawler/scanners/xss.txt"
     
     if not os.path.exists(file_path):
@@ -117,7 +117,7 @@ def scan_xss(target_url, payload_file=None):
             "details": "No XSS vulnerabilities detected."
         }
 
-# ✅ Optional: for standalone testing
+# Optional: for standalone testing
 if __name__ == "__main__":
     target_url = input("[?] Enter target URL (e.g., http://127.0.0.1/DVWA/vulnerabilities/xss_r/): ").strip()
     payload_path = input("[?] Path to XSS payloads file (default is hardcoded path): ").strip()

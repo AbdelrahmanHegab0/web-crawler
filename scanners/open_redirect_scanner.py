@@ -2,13 +2,13 @@ import requests
 import urllib.parse
 import os
 
-# ======= إعدادات الهدف =========
+
 cookies = {
     "PHPSESSID": "PUT_YOUR_SESSION_ID_HERE",
     "security": "low"
 }
 
-# ======= تحميل البايلودات =========
+# payload تحميل
 def load_payloads(file_path="open_redirect.txt"):
     default_path = r"D:/GitHub/web-crawler/scanners/open_redirect.txt"
     file_path = file_path if os.path.exists(file_path) else default_path
@@ -20,7 +20,7 @@ def load_payloads(file_path="open_redirect.txt"):
         print(f"[⚠️] Error loading payloads: {e}")
         return []
 
-# ======= فحص الثغرة =========
+# vulnerability بيشوف ال 
 def check_open_redirect(target_url, payload):
     try:
         parsed_url = urllib.parse.urlparse(target_url)
@@ -68,7 +68,7 @@ def check_open_redirect(target_url, payload):
 
     return None
 
-# ======= الفحص النهائي =========
+#  الفحص النهائي 
 def scan_open_redirect(target_url, payload_file="open_redirect.txt"):
     if not target_url:
         return {
@@ -106,7 +106,7 @@ def scan_open_redirect(target_url, payload_file="open_redirect.txt"):
         "details": "No Open Redirect vulnerabilities found."
     }
 
-# ======= للاختبار المباشر =========
+# Optional: for standalone testing
 if __name__ == "__main__":
     target_url = input("[?] Enter URL (e.g., http://127.0.0.1/DVWA/vulnerabilities/redirect/): ").strip()
 

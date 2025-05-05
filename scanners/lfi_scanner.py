@@ -10,7 +10,7 @@ COOKIES = {
 }
 
 def load_payloads(file_path="lfi.txt"):
-    file_path = r"D:/GitHub/web-crawler/scanners/lfi.txt"  # ✅ تأكد إن المسار دا فعلاً صح
+    file_path = r"D:/GitHub/web-crawler/scanners/lfi.txt"  
     if not os.path.exists(file_path):
         print(f"[-] Payload file not found: {file_path}")
         return []
@@ -71,7 +71,7 @@ def scan_lfi(target_url):
             "details": "No LFI vulnerabilities detected."
         }
 
-# ✅ Optional: for standalone testing
+# Optional: for standalone testing
 if __name__ == "__main__":
     target_url = input("[?] Enter URL (e.g., http://127.0.0.1/DVWA/vulnerabilities/fi/?page=): ").strip()
 
